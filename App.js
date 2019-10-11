@@ -25,14 +25,12 @@ export default class App extends React.Component {
 
   render() {
     return (
-      // <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#00BCD4" translucent = {true}/>
-      <StatusBar backgroundColor="blue" barStyle="light-content" />
-      // <View style={styles.container}>
-      //   <Status />
-      //   {this.renderMessageList()}
-      //   {this.renderToolbar()}
-      //   {this.renderInputMethodEditor()}
-      // </View>
+      <View style={styles.container}>
+        <Status />
+        {this.renderMessageList()}
+        {this.renderToolbar()}
+        {this.renderInputMethodEditor()}
+      </View>
     );
   }
 }

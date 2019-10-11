@@ -1,10 +1,35 @@
 import Constants from 'expo-constants';
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 export default class Status extends React.Component {
     state = {
         info: 'none',
+    };
+
+    async componentWillMount() {
+        this.subsciption = NetInfo.addEventListener( state => {
+            this.handleChange(state.type);
+        });
+
+        this.setNetInfo();
+
+        // setTimeout(() => this.handleChange('none'), 3000); 
+    }
+
+    componentDidMount() {
+        this.subsciption();
+    }
+
+    setNetInfo = async () => {
+        NetInfo.fetch().then(state => {
+            this.handleChange(state.type);
+        });
+    }
+
+    handleChange = (info) => {
+        this.setState({ info });
     };
 
     render() {
@@ -13,7 +38,6 @@ export default class Status extends React.Component {
         const isConnected = info !== 'none';
         const backgroundColor = isConnected ? 'white' : 'red';
 
-        console.log(isConnected);
         const statusBar = (
             <StatusBar
                 backgroundColor={backgroundColor}
@@ -24,9 +48,7 @@ export default class Status extends React.Component {
 
         const messageContainer = (
             <View style={styles.messageContainer} pointerEvents={'none'}>
-                {/* {statusBar} */}
-                {/* <StatusBar backgroundColor="blue" barStyle="light-content" /> */}
-                <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#00BCD4" translucent = {true}/>
+                {statusBar}
                 {!isConnected && (
                     <View style={styles.bubble}>
                         <Text style={styles.text}>No network connection</Text>
