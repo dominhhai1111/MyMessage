@@ -2,12 +2,33 @@ import React from 'react';
 import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import { Constants } from 'expo-constants';
 
+import Test from './screens/Test';
+
 import Status from './components/Status';
+import MessageList from './components/MessageList';
+import { createTextMessage, createImageMessage, createLocationMessage } from './utils/MessageUtils';
 
 export default class App extends React.Component {
+  state = {
+    messages: [
+      createTextMessage('Hello'),
+      createImageMessage('https://unsplash.it/300/300'),
+      createLocationMessage({
+        latitude: 37.78825,
+        longitude: -122.4324,
+      }),
+    ],
+  };
+
+  handlePressMessage = () => {};
+
   renderMessageList() {
+    const { messages } = this.state;
+
     return (
-      <View style={styles.content}></View>
+      <View style={styles.content}>
+        <MessageList messages={messages} onPressMessage={this.handlePressMessage} />
+      </View>
     );
   }
 
@@ -25,6 +46,7 @@ export default class App extends React.Component {
 
   render() {
     return (
+      // <Test></Test>
       <View style={styles.container}>
         <Status />
         {this.renderMessageList()}
