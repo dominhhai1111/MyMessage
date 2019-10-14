@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
-  StyleSheet, 
-  TouchableHighlight, 
-  View, 
-  Alert, 
-  Image, 
+import {
+  StyleSheet,
+  TouchableHighlight,
+  View,
+  Alert,
+  Image,
   BackHandler,
 } from 'react-native';
 import { Constants } from 'expo-constants';
@@ -49,13 +49,13 @@ export default class App extends React.Component {
     this.subscription.remove();
   }
 
-  handlePressToolbarCamera = () => {};
+  handlePressToolbarCamera = () => { };
 
   handlePressToolbarLocation = () => {
     const { messages } = this.state;
 
     navigator.geolocation.getCurrentPosition((position) => {
-      const { coords: { latitude, longitude }} = position;
+      const { coords: { latitude, longitude } } = position;
 
       this.setState({
         messages: [
@@ -89,7 +89,7 @@ export default class App extends React.Component {
     const image = messages.find(message => message.id === fullScreenImageId);
 
     if (!image) return null;
-    
+
     const { uri } = image;
 
     return (
@@ -97,7 +97,7 @@ export default class App extends React.Component {
         style={styles.fullscreenOverlay}
         onPress={this.dismissFullScreenImage}
       >
-        <Image style={styles.fullscreenImage} source={{ uri }}/>
+        <Image style={styles.fullscreenImage} source={{ uri }} />
       </TouchableHighlight>
     );
   };
@@ -137,6 +137,14 @@ export default class App extends React.Component {
     }
   };
 
+  handlePressImage = (uri) => {
+    const { messages } = this.state;
+
+    this.setState({
+      messages: [createImageMessage(uri), ...messages],
+    });
+  };
+
   renderMessageList() {
     const { messages } = this.state;
 
@@ -150,7 +158,7 @@ export default class App extends React.Component {
   renderInputMethodEditor() {
     return (
       <View style={styles.inputMethodEditor}>
-        <ImageGrid />
+        <ImageGrid onPressImage={this.handlePressImage} />
       </View>
     );
   }
@@ -160,8 +168,8 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.toolbar}>
-        <Toolbar 
-          isFocused = {isInputFocused}
+        <Toolbar
+          isFocused={isInputFocused}
           onSubmit={this.handleSubmit}
           onChangeFocus={this.handleChangeFocus}
           onPressCamera={this.handlePressToolbarCamera}
